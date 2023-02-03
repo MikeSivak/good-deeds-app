@@ -15,7 +15,7 @@ export class DeedsService {
     return this.deedModel.create(createDeedDto);
   }
 
-  async getAllDeeds(): Promise<IDeed[]> {
+  async getUserDeeds(): Promise<IDeed[]> {
     return this.deedModel.find();
   }
 

@@ -8,13 +8,9 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     readonly lastName: string;
-    @IsString()
-    @IsNotEmpty()
-    readonly username: string;
     @IsEmail()
     @IsNotEmpty()
-    readonly email: string;
-    @IsStrongPassword()
+    readonly username: string;
     @IsNotEmpty()
-    readonly password: string;
+    password: string;
 }

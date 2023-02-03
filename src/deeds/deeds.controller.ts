@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { DeedsService } from './deeds.service';
 import { CreateDeedDto } from './dto/create-deed.dto';
 import { UpdateDeedDto } from './dto/update-deed.dto';
 
 @Controller('deeds')
+@UseGuards(JwtAuthGuard)
 export class DeedsController {
   constructor(private readonly deedsService: DeedsService) { }
 
@@ -13,8 +15,8 @@ export class DeedsController {
   }
 
   @Get()
-  async getAllDeeds() {
-    return await this.deedsService.getAllDeeds();
+  async getUserDeeds() {
+    return await this.deedsService.getUserDeeds();
   }
 
   @Get(':id')
