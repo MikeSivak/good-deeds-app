@@ -19,15 +19,15 @@ export class DeedsService {
     return this.deedModel.find();
   }
 
-  async getDeedById(id: number): Promise<IDeed> {
+  async getDeedById(id: string): Promise<IDeed> {
     return this.deedModel.findById(id);
   }
 
-  async updateDeedById(id: number, updateDeedDto: UpdateDeedDto): Promise<IDeed> {
+  async updateDeedById(id: string, updateDeedDto: UpdateDeedDto): Promise<IDeed> {
     return this.deedModel.findByIdAndUpdate(id, updateDeedDto);
   }
 
-  async deleteDeedById(id: number): Promise<IDeed> {
+  async deleteDeedById(id: string): Promise<IDeed> {
     return this.deedModel.findByIdAndDelete(id);
   }
 }
