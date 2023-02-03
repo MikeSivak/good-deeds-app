@@ -18,17 +18,17 @@ export class DeedsController {
   }
 
   @Get(':id')
-  async getDeedById(@Param('id') id: number) {
+  async getDeedById(@Param('id') id: string) {
     return await this.deedsService.getDeedById(id);
   }
 
   @Patch(':id')
-  async updateDeedById(@Param('id') id: number, @Body() updateDeedDto: UpdateDeedDto) {
+  async updateDeedById(@Param('id') id: string, @Body() updateDeedDto: UpdateDeedDto) {
     return await this.deedsService.updateDeedById(id, updateDeedDto);
   }
 
   @Delete(':id')
-  async deleteById(@Param('id') id: number) {
+  async deleteById(@Param('id') id: string) {
     return await this.deedsService.deleteDeedById(id);
   }
 }
