@@ -8,51 +8,41 @@ import { GetUser } from 'src/deeds/decorators/get-user.decorator';
 import { IUserRequest } from './interfaces/user-req.interface';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
-  //Create your profile
-  @Post('/sign-up')
-  async createUser(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.createUser(createUserDto);
-  }
-
   //Get all users except yourself
-  @UseGuards(JwtAuthGuard)
   @Get()
   async getAllUsers(@GetUser() user: IUserRequest) {
     return await this.usersService.getAllUsers(user.userId);
   }
 
   //Get your profile info
-  @UseGuards(JwtAuthGuard)
-  @Get('/myprofile')
+  @Get('/my-profile')
   async getMyProfile(@GetUser() user: IUserRequest) {
     return await this.usersService.getMyProfile(user.userId);
   }
 
   //Add a friend to your profile
-  @UseGuards(JwtAuthGuard)
   @Post('/add-friend')
   async addFriend(@GetUser() user: IUserRequest, @Body() addFriendDto: AddFriendDto) {
     return await this.usersService.addFriend(user, addFriendDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //Get user by id
   @Get(':id')
-  async getUserById(@Param('id') id: string) {
-    return await this.usersService.getUserById(id);
+  async getUserById(@GetUser() user: IUserRequest, @Param('id') id: string) {
+    return await this.usersService.getUserById(id, user.userId);
   }
 
   //Update your profile
-  @UseGuards(JwtAuthGuard)
   @Patch()
   async updateUserById(@GetUser() user: IUserRequest, @Body() updateUserDto: UpdateUserDto) {
     return await this.usersService.updateUserById(user.userId, updateUserDto);
   }
 
   //Delete your profile
-  @UseGuards(JwtAuthGuard)
   @Delete()
   async deleteUserById(@GetUser() user: IUserRequest) {
     return await this.usersService.deleteUserById(user.userId);

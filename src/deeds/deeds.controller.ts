@@ -20,11 +20,6 @@ export class DeedsController {
     return await this.deedsService.createDeed(user, createDeedDto);
   }
 
-  @Get()
-  async getUserDeeds() {
-    return await this.deedsService.getUserDeeds();
-  }
-
   @Get(':id')
   async getDeedById(@Param('id') id: string) {
     return await this.deedsService.getDeedById(id);

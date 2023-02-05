@@ -3,7 +3,6 @@ import { DeedsService } from './deeds.service';
 import { DeedsController } from './deeds.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DeedSchema } from './entities/deed.entity';
-import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({
@@ -13,7 +12,8 @@ import { UsersModule } from 'src/users/users.module';
     MongooseModule.forFeature([
       { name: 'Deed', schema: DeedSchema },
     ]),
-    UsersModule
-  ]
+    UsersModule,
+  ],
+  exports: [DeedsService]
 })
 export class DeedsModule { }

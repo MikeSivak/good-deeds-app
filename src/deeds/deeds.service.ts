@@ -28,10 +28,6 @@ export class DeedsService {
     return newDeed;
   }
 
-  async getUserDeeds(): Promise<IDeed[]> {
-    return this.deedModel.find();
-  }
-
   async getDeedById(id: string): Promise<IDeed> {
     return this.deedModel.findById(id);
   }

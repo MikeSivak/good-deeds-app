@@ -10,6 +10,7 @@ import { AddFriendDto } from './dto/add-firend.dto';
 import { IUserRequest } from './interfaces/user-req.interface';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { Types } from "mongoose";
+import { usersProtection } from './constants/users-protection.constants';
 
 @Injectable()
 export class UsersService {
@@ -39,16 +40,19 @@ export class UsersService {
     return myFriends;
   }
 
+  //Get all users without private fields (friends, deeds, password)
   async getAllUsers(id: string): Promise<IUser[]> {
-    return this.userModel.find({ _id: { $ne: id } });
+    return this.userModel.find({ _id: { $ne: id } }, usersProtection);
   }
 
   async getMyProfile(id: string): Promise<IUser> {
     return await this.getUserById(id);
   }
 
-  async getUserById(id: string): Promise<IUser> {
-    return this.userModel.findById(id);
+  async getUserById(id: string, reqUserId?: string): Promise<IUser> {
+    // const reqUserfirends = (await this.userModel.findById(reqUserId)).friends;
+    // const otherUser = await this.userModel.findById(id);
+    return this.userModel.findById(id, { password: false });
   }
 
   async getUserByUserName(username: string): Promise<User> {
@@ -61,11 +65,10 @@ export class UsersService {
       const saltOrRounds: number = 10;
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, saltOrRounds);
     }
-    return this.userModel.findByIdAndUpdate(id, updateUserDto);
+    return await this.userModel.findByIdAndUpdate(id, updateUserDto);
   }
 
   async deleteUserById(id: string): Promise<IUser> {
-    //TODO: throw 401 unauthorized exceprion id user deleted
-    return this.userModel.findByIdAndDelete(id);
+    return await this.userModel.findByIdAndDelete(id);
   }
 }
