@@ -1,5 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword } from "class-validator";
-import { Deed } from "src/deeds/entities/deed.entity";
+import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateUserDto {
     @IsString()

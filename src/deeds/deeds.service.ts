@@ -21,9 +21,6 @@ export class DeedsService {
 
   async createDeed(user: IUserRequest, createDeedDto: CreateDeedDto): Promise<IDeed> {
     const userFromDb: IUser = await this.usersService.getUserById(user.userId);
-    if (!userFromDb) {
-      throw new NotFoundException('User not found');
-    }
     const newDeed = await this.deedModel.create(createDeedDto);
     userFromDb.deeds.push(newDeed);
     await userFromDb.save();
