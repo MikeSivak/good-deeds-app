@@ -1,18 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateDeedDto } from './dto/create-deed.dto';
 import { UpdateDeedDto } from './dto/update-deed.dto';
 import { IDeed } from './interfaces/deed.interface';
 import { Model } from 'mongoose';
+import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/entities/user.entity';
+import { IUser } from 'src/users/interfaces/user.interface';
+import { NotFoundException } from '@nestjs/common/exceptions';
+import { IUserRequest } from 'src/users/interfaces/user-req.interface';
 
 @Injectable()
 export class DeedsService {
   constructor(
     @InjectModel('Deed')
-    private deedModel: Model<IDeed>
+    private deedModel: Model<IDeed>,
+    @Inject(UsersService)
+    private readonly usersService: UsersService,
   ) { }
-  async createDeed(createDeedDto: CreateDeedDto): Promise<IDeed> {
-    return this.deedModel.create(createDeedDto);
+
+  async createDeed(user: IUserRequest, createDeedDto: CreateDeedDto): Promise<IDeed> {
+    const userFromDb: IUser = await this.usersService.getUserById(user.userId);
+    if (!userFromDb) {
+      throw new NotFoundException('User not found');
+    }
+    const newDeed = await this.deedModel.create(createDeedDto);
+    userFromDb.deeds.push(newDeed);
+    await userFromDb.save();
+
+    return newDeed;
   }
 
   async getUserDeeds(): Promise<IDeed[]> {

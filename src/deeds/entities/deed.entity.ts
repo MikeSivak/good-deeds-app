@@ -1,4 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { User } from 'src/users/entities/user.entity';
+import { Types } from 'mongoose';
 
 @Schema()
 export class Deed {

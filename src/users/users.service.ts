@@ -13,10 +13,15 @@ export class UsersService {
     @InjectModel('User')
     private userModel: Model<IUser>
   ) { }
+
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
     const saltOrRounds: number = 10;
     createUserDto.password = await bcrypt.hash(createUserDto.password, saltOrRounds);
     return this.userModel.create(createUserDto);
+  }
+
+  async check() {
+    console.log('ПИДАРАСИНА!')
   }
 
   async getAllUsers(): Promise<IUser[]> {

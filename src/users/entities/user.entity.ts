@@ -14,6 +14,10 @@ export class User {
     password: string;
     @Prop({ type: [Types.ObjectId], ref: 'Deed' })
     deeds: Deed[];
+    @Prop()
+    friends: User[];
+    @Prop()
+    rate: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
