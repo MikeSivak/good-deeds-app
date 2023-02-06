@@ -3,7 +3,7 @@ import { Deed } from "src/deeds/entities/deed.entity";
 import { Types } from "mongoose";
 
 @Schema()
-export class User{
+export class User {
     @Prop()
     firstName: string;
     @Prop()

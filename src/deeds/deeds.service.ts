@@ -9,6 +9,8 @@ import { User } from 'src/users/entities/user.entity';
 import { IUser } from 'src/users/interfaces/user.interface';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { IUserRequest } from 'src/users/interfaces/user-req.interface';
+import { Types } from 'mongoose';
+import { Deed } from './entities/deed.entity';
 
 @Injectable()
 export class DeedsService {
@@ -38,5 +40,14 @@ export class DeedsService {
 
   async deleteDeedById(id: string): Promise<IDeed> {
     return this.deedModel.findByIdAndDelete(id);
+  }
+
+  async getDeedsByUserId(reqUser: IUserRequest, id: string): Promise<Deed[] | string> {
+    const friendsIds = (await this.usersService.getUserById(reqUser.userId))
+      .friends.map(f => f.valueOf());
+    if (!friendsIds.includes(id)) {
+      return 'you need to add this user as a friend if you want to see more information';
+    }
+    return (await (await this.usersService.getUserById(id)).populate('deeds')).deeds;
   }
 }
