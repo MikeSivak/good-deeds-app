@@ -4,19 +4,19 @@ import { Types } from "mongoose";
 
 @Schema()
 export class User {
-    @Prop()
+    @Prop({ required: true })
     firstName: string;
-    @Prop()
+    @Prop({ required: true })
     lastName: string;
-    @Prop()
+    @Prop({ required: true })
     username: string;
-    @Prop()
+    @Prop({ required: true })
     password: string;
     @Prop({ type: [Types.ObjectId], ref: 'Deed' })
     deeds: Deed[];
     @Prop({ type: [Types.ObjectId], ref: 'User' })
     friends: User[];
-    @Prop()
+    @Prop({ required: false })
     rate: number;
 }
 

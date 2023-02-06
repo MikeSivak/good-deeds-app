@@ -3,11 +3,11 @@ import { Comment } from 'src/comments/entities/comment.entity';
 
 @Schema()
 export class Deed {
-    @Prop()
+    @Prop({ required: true })
     name: string;
-    @Prop()
+    @Prop({ required: false })
     description: string;
-    @Prop()
+    @Prop({ required: true })
     status: boolean;
     @Prop({ type: [], ref: 'Comment' })
     comments: Comment[];

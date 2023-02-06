@@ -1,13 +1,13 @@
-import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateDeedDto {
     @IsString()
     @IsNotEmpty()
     readonly name: string;
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     readonly description: string;
     @IsBoolean()
     @IsNotEmpty()
-    readonly status: boolean = false;
+    readonly status: boolean;
 }
