@@ -9,5 +9,5 @@ export interface IUser extends Document {
     readonly password: string,
     readonly deeds: Deed[],
     readonly friends: User[],
-    readonly rate: number,
+    rate: number,
 }

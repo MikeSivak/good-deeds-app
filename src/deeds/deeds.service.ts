@@ -5,11 +5,8 @@ import { UpdateDeedDto } from './dto/update-deed.dto';
 import { IDeed } from './interfaces/deed.interface';
 import { Model } from 'mongoose';
 import { UsersService } from 'src/users/users.service';
-import { User } from 'src/users/entities/user.entity';
 import { IUser } from 'src/users/interfaces/user.interface';
-import { NotFoundException } from '@nestjs/common/exceptions';
 import { IUserRequest } from 'src/users/interfaces/user-req.interface';
-import { Types } from 'mongoose';
 import { Deed } from './entities/deed.entity';
 
 @Injectable()
@@ -34,7 +31,10 @@ export class DeedsService {
     return this.deedModel.findById(id);
   }
 
-  async updateDeedById(id: string, updateDeedDto: UpdateDeedDto): Promise<IDeed> {
+  async updateDeedById(user: IUserRequest, id: string, updateDeedDto: UpdateDeedDto): Promise<IDeed> {
+    if (updateDeedDto.status === true) {
+      await this.usersService.increaseRating(user.userId);
+    }
     return this.deedModel.findByIdAndUpdate(id, updateDeedDto);
   }
 

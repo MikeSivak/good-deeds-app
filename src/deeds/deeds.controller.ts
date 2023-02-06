@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { User } from 'src/users/entities/user.entity';
 import { IUserRequest } from 'src/users/interfaces/user-req.interface';
-import { UsersService } from 'src/users/users.service';
 import { GetUser } from './decorators/get-user.decorator';
 import { DeedsService } from './deeds.service';
 import { CreateDeedDto } from './dto/create-deed.dto';
@@ -26,8 +24,8 @@ export class DeedsController {
   }
 
   @Patch(':id')
-  async updateDeedById(@Param('id') id: string, @Body() updateDeedDto: UpdateDeedDto) {
-    return await this.deedsService.updateDeedById(id, updateDeedDto);
+  async updateDeedById(@GetUser() user: IUserRequest, @Param('id') id: string, @Body() updateDeedDto: UpdateDeedDto) {
+    return await this.deedsService.updateDeedById(user, id, updateDeedDto);
   }
 
   @Delete(':id')

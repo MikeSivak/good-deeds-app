@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { DeedsService } from 'src/deeds/deeds.service';
 import { IUserRequest } from 'src/users/interfaces/user-req.interface';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Model } from 'mongoose';
 import { IComment } from './interfaces/comment.interface';
 
@@ -22,21 +21,5 @@ export class CommentsService {
     await deed.save();
 
     return savedComment;
-  }
-
-  findAll() {
-    return `This action returns all comments`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
-  }
-
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} comment`;
   }
 }

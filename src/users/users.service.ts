@@ -10,7 +10,6 @@ import { AddFriendDto } from './dto/add-firend.dto';
 import { IUserRequest } from './interfaces/user-req.interface';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { usersProtection } from './constants/users-protection.constants';
-import { Deed } from 'src/deeds/entities/deed.entity';
 
 @Injectable()
 export class UsersService {
@@ -59,9 +58,17 @@ export class UsersService {
     return this.userModel.findOne({ username: username });
   }
 
+  async increaseRating(userId: string): Promise<IUser> {
+    const user = await this.getUserById(userId);
+    let rate = user.rate + 10;
+    user.rate = rate;
+    await user.save();
+
+    return user;
+  }
+
   async updateUserById(id: string, updateUserDto: UpdateUserDto): Promise<IUser> {
     if (updateUserDto.password) {
-      //TODO: move to common code
       const saltOrRounds: number = 10;
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, saltOrRounds);
     }

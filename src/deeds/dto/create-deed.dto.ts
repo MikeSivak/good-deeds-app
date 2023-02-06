@@ -9,5 +9,5 @@ export class CreateDeedDto {
     readonly description: string;
     @IsBoolean()
     @IsNotEmpty()
-    readonly status: boolean;
+    readonly status: boolean = false;
 }

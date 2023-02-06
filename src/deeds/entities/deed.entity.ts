@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
 import { Comment } from 'src/comments/entities/comment.entity';
 
 @Schema()
@@ -10,7 +9,7 @@ export class Deed {
     description: string;
     @Prop()
     status: boolean;
-    @Prop({ type: [Types.ObjectId], ref: 'Comment' })
+    @Prop({ type: [], ref: 'Comment' })
     comments: Comment[];
 }
 

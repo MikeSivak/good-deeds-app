@@ -1,4 +1,13 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { CreateDeedDto } from "src/deeds/dto/create-deed.dto";
+import { IsBoolean, IsOptional, IsString } from "class-validator";
 
-export class UpdateDeedDto extends PartialType(CreateDeedDto) { };
+export class UpdateDeedDto {
+    @IsString()
+    @IsOptional()
+    readonly name: string;
+    @IsString()
+    @IsOptional()
+    readonly description: string;
+    @IsBoolean()
+    @IsOptional()
+    readonly status: boolean;
+};
