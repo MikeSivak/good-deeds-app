@@ -32,8 +32,8 @@ export class UsersController {
 
   //Get user by id
   @Get(':id')
-  async getUserById(@GetUser() user: IUserRequest, @Param('id') id: string) {
-    return await this.usersService.getUserById(id, user.userId);
+  async getUserById(@Param('id') id: string) {
+    return await this.usersService.getUserById(id);
   }
 
   //Update your profile

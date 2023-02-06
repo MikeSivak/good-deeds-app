@@ -9,8 +9,8 @@ import { User } from './entities/user.entity';
 import { AddFriendDto } from './dto/add-firend.dto';
 import { IUserRequest } from './interfaces/user-req.interface';
 import { NotFoundException } from '@nestjs/common/exceptions';
-import { Types } from "mongoose";
 import { usersProtection } from './constants/users-protection.constants';
+import { Deed } from 'src/deeds/entities/deed.entity';
 
 @Injectable()
 export class UsersService {
@@ -42,6 +42,8 @@ export class UsersService {
 
   //Get all users without private fields (friends, deeds, password)
   async getAllUsers(id: string): Promise<IUser[]> {
+    //below: get users with deeds
+    // const users = await this.userModel.find({ _id: { $ne: id } }).populate('deeds');
     return this.userModel.find({ _id: { $ne: id } }, usersProtection);
   }
 
@@ -49,17 +51,15 @@ export class UsersService {
     return await this.getUserById(id);
   }
 
-  async getUserById(id: string, reqUserId?: string): Promise<IUser> {
-    // const reqUserfirends = (await this.userModel.findById(reqUserId)).friends;
-    // const otherUser = await this.userModel.findById(id);
-    return this.userModel.findById(id, { password: false });
+  async getUserById(id: string): Promise<IUser> {
+    return this.userModel.findById(id);
   }
 
   async getUserByUserName(username: string): Promise<User> {
     return this.userModel.findOne({ username: username });
   }
 
-  async updateUserById(id: string, updateUserDto: UpdateUserDto): Promise<void> {
+  async updateUserById(id: string, updateUserDto: UpdateUserDto): Promise<IUser> {
     if (updateUserDto.password) {
       //TODO: move to common code
       const saltOrRounds: number = 10;
