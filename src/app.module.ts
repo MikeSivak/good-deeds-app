@@ -15,13 +15,9 @@ import { ConfigService } from '@nestjs/config';
       isGlobal: true,
     }),
     DeedsModule,
-    // MongooseModule.forRoot('mongodb://localhost:27017', {
-    //   dbName: 'deedsdb'
-    // }),
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_DB_URL'),
-        dbName: configService.get<string>('DB_NAME'),
+        uri: configService.get<string>('MONGODB_URL').toString(),
       }),
       inject: [ConfigService]
     }),
