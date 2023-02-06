@@ -10,22 +10,24 @@ import { AddFriendDto } from './dto/add-firend.dto';
 import { IUserRequest } from './interfaces/user-req.interface';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { usersProtection } from './constants/users-protection.constants';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel('User')
-    private userModel: Model<IUser>,
+    private readonly userModel: Model<IUser>,
+    private readonly configService: ConfigService,
   ) { }
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
     //move to common code
-    const saltOrRounds: number = 10;
+    const saltOrRounds: number = +this.configService.get<string>('SALT_OR_ROUNDS');
     createUserDto.password = await bcrypt.hash(createUserDto.password, saltOrRounds);
     return this.userModel.create(createUserDto);
   }
 
-  async addFriend(user: IUserRequest, addFriendDto: AddFriendDto): Promise<IUser[]> {
+  async addFriend(user: IUserRequest, addFriendDto: AddFriendDto): Promise<User> {
     const userFromDb: IUser = await this.getUserById(user.userId);
     const friend = await this.getUserByUserName(addFriendDto.username);
     if (!friend) {
@@ -33,10 +35,8 @@ export class UsersService {
     }
     userFromDb.friends.push(friend);
     await userFromDb.save();
-    const myFriends: any = (await this.getUserById(user.userId)).friends;
-    console.log(myFriends);
 
-    return myFriends;
+    return friend;
   }
 
   //Get all users without private fields (friends, deeds, password)
@@ -67,7 +67,7 @@ export class UsersService {
 
   async updateUserById(id: string, updateUserDto: UpdateUserDto): Promise<IUser> {
     if (updateUserDto.password) {
-      const saltOrRounds: number = 10;
+      const saltOrRounds: number = +this.configService.get<string>('SALT_OR_ROUNDS');
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, saltOrRounds);
     }
     return await this.userModel.findByIdAndUpdate(id, updateUserDto);
