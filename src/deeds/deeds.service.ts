@@ -28,18 +28,18 @@ export class DeedsService {
   }
 
   async getDeedById(id: string): Promise<IDeed> {
-    return this.deedModel.findById(id);
+    return await this.deedModel.findById(id);
   }
 
   async updateDeedById(user: IUserRequest, id: string, updateDeedDto: UpdateDeedDto): Promise<IDeed> {
     if (updateDeedDto.status === true) {
       await this.usersService.increaseRating(user.userId);
     }
-    return this.deedModel.findByIdAndUpdate(id, updateDeedDto);
+    return await this.deedModel.findByIdAndUpdate(id, updateDeedDto);
   }
 
   async deleteDeedById(id: string): Promise<IDeed> {
-    return this.deedModel.findByIdAndDelete(id);
+    return await this.deedModel.findByIdAndDelete(id);
   }
 
   async getDeedsByUserId(reqUser: IUserRequest, id: string): Promise<Deed[] | string> {

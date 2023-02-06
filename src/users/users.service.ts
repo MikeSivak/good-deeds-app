@@ -24,7 +24,7 @@ export class UsersService {
     //move to common code
     const saltOrRounds: number = +this.configService.get<string>('SALT_OR_ROUNDS');
     createUserDto.password = await bcrypt.hash(createUserDto.password, saltOrRounds);
-    return this.userModel.create(createUserDto);
+    return await this.userModel.create(createUserDto);
   }
 
   async addFriend(user: IUserRequest, addFriendDto: AddFriendDto): Promise<User> {
@@ -41,7 +41,7 @@ export class UsersService {
 
   //Get all users without private fields (friends, deeds, password)
   async getAllUsers(id: string): Promise<IUser[]> {
-    return this.userModel.find({ _id: { $ne: id } }, usersProtection);
+    return await this.userModel.find({ _id: { $ne: id } }, usersProtection);
   }
 
   async getMyProfile(id: string): Promise<IUser> {
@@ -49,11 +49,11 @@ export class UsersService {
   }
 
   async getUserById(id: string): Promise<IUser> {
-    return this.userModel.findById(id, { password: usersProtection.password });
+    return await this.userModel.findById(id, { password: usersProtection.password });
   }
 
   async getUserByUserName(username: string): Promise<User> {
-    return this.userModel.findOne({ username: username });
+    return await this.userModel.findOne({ username: username });
   }
 
   async increaseRating(userId: string): Promise<IUser> {

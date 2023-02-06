@@ -13,7 +13,7 @@ export class CommentsService {
     private readonly commentsModel: Model<IComment>,
     private readonly deedsService: DeedsService,
   ) { }
-  async createComment(user: IUserRequest, createCommentDto: CreateCommentDto) {
+  async createComment(user: IUserRequest, createCommentDto: CreateCommentDto): Promise<IComment> {
     const deed = await this.deedsService.getDeedById(createCommentDto.deedId);
     const newComment = { username: user.username, content: createCommentDto.content };
     const savedComment = await this.commentsModel.create(newComment);
