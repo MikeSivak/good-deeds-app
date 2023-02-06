@@ -15,7 +15,7 @@ import { usersProtection } from './constants/users-protection.constants';
 export class UsersService {
   constructor(
     @InjectModel('User')
-    private userModel: Model<IUser>
+    private userModel: Model<IUser>,
   ) { }
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
@@ -41,8 +41,6 @@ export class UsersService {
 
   //Get all users without private fields (friends, deeds, password)
   async getAllUsers(id: string): Promise<IUser[]> {
-    //below: get users with deeds
-    // const users = await this.userModel.find({ _id: { $ne: id } }).populate('deeds');
     return this.userModel.find({ _id: { $ne: id } }, usersProtection);
   }
 
@@ -51,7 +49,7 @@ export class UsersService {
   }
 
   async getUserById(id: string): Promise<IUser> {
-    return this.userModel.findById(id);
+    return this.userModel.findById(id, { password: usersProtection.password });
   }
 
   async getUserByUserName(username: string): Promise<User> {
