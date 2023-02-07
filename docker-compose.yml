@@ -2,15 +2,20 @@ version: '3.8'
 services:
   mongodb:
     image: mongo:latest
+    container_name: good-deeds-app-mongodb
     env_file:
       - .env
     ports:
       - 27017:27017
     volumes:
       - mongodb_data_container:/data/db
+    networks:
+      - server-network
+    restart: unless-stopped
 
   api:
     build: .
+    container_name: good-deeds-app
     volumes:
       - .:/app
       - /app/node_modules
@@ -21,6 +26,13 @@ services:
       - .env
     depends_on:
       - mongodb
+    networks:
+      - server-network
+    restart: unless-stopped
 
 volumes:
   mongodb_data_container:
+
+
+networks:
+  server-network:
